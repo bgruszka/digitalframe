@@ -1,0 +1,4 @@
+guizero==0.4.5
+imbox==0.9.5
+appjar==0.91.0
+Pillow=5.0.0
