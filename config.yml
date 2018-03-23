@@ -1,0 +1,4 @@
+config:
+  mail_host: x
+  mail_username: x
+  mail_password: x
