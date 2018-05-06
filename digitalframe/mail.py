@@ -21,10 +21,10 @@ class Inbox:
                     if not os.path.isdir('data'):
                         os.mkdir('data')
 
-                    with open('data/' + attachment['filename'] + '.txt', 'w') as file:
+                    with open('data/' + attachment['filename'].lower() + '.txt', 'w') as file:
                         file.write(message.subject)
 
-                    with open('data/' + attachment['filename'], 'wb') as file:
+                    with open('data/' + attachment['filename'].lower(), 'wb') as file:
                         file.write(attachment['content'].getvalue())
 
                 imbox.mark_seen(uid)

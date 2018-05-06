@@ -16,6 +16,7 @@ class DigitalFrameApp:
         self.config = configuration.data['config']
         self.full_screen = full_screen
         self.app = gui()
+        self.app.setBg("black")
         self.current_picture = False
         self.check_mails_thread = Thread(name='check_mail_thread', target=self.check_mails).start()
         self.select_image_thread = Thread(name='select_image_thread', target=self.select_image).start()
@@ -29,40 +30,43 @@ class DigitalFrameApp:
 
     def select_image(self):
         while True:
-            images = glob.glob('data/*.JPG')
+            images = glob.glob('data/*.jpg')
 
             if len(images) == 0:
                 print("Nie znalazłem zdjec... Sprobuje za 60 sekund...")
                 time.sleep(60)
                 continue
 
-            selected_image = random.choice(images)
+            try:
+                selected_image = random.choice(images)
 
-            print(selected_image)
+                print(selected_image)
 
-            photo = Image.open(selected_image)
-            photo.thumbnail((800, 480), Image.ANTIALIAS)
+                photo = Image.open(selected_image)
+                photo.thumbnail((800, 480), Image.ANTIALIAS)
 
-            draw = ImageDraw.Draw(photo)
-            font = ImageFont.truetype('./Arial.ttf', size=23)
+                draw = ImageDraw.Draw(photo)
+                font = ImageFont.truetype('DejaVuSans.ttf', size=23)
 
-            with open(selected_image + '.txt', 'r') as text_file:
-                text = text_file.read()
-                w, h = draw.textsize(text, font=font)
-                draw.text(((photo.width - w) / 2, 440), text, (255, 255, 0), font=font)
+                with open(selected_image + '.txt', 'r') as text_file:
+                    text = text_file.read()
+                    w, h = draw.textsize(text, font=font)
+                    draw.text(((photo.width - w) / 2, 440), text, (255, 255, 0), font=font)
 
-            photo = ImageTk.PhotoImage(photo)
+                photo = ImageTk.PhotoImage(photo)
 
-            if not self.current_picture:
-                self.app.addImageData("pic", photo, fmt="PhotoImage")
+                if not self.current_picture:
+                    self.app.addImageData("pic", photo, fmt="PhotoImage")
 
-                self.current_picture = True
-            else:
-                self.app.setImageData("pic", photo, fmt="PhotoImage")
+                    self.current_picture = True
+                else:
+                    self.app.setImageData("pic", photo, fmt="PhotoImage")
 
-            # self.app.addLabel("title", "Welcome to appJar")
+                # self.app.addLabel("title", "Welcome to appJar")
 
-            time.sleep(5)
+                time.sleep(5)
+            except(Exception) as e:
+                print(e)
 
     def run(self):
         if self.full_screen:
